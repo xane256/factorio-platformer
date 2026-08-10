@@ -2,44 +2,35 @@
 Version: 1.3.0
 Date: 10. 08. 2026
   Features:
-    - New platforms now go through the native "+ Add Space Platform" UI (name, orbit, and
-      starter pack quality). A platform waiting for its pack is fulfilled from any hub on
-      the force that holds the requested pack, standing in for the planetside rocket silo.
-    - Removed the 1.2.0 toolbar shortcut and remote interface; the native flow covers them.
+    - New platforms are created through the native "+ Add Space Platform" UI. A waiting
+      platform is fulfilled from any hub on the force that holds the requested pack.
+    - Removed the 1.2.0 toolbar shortcut and remote interface.
   Bugfixes:
-    - Factory Planner crashed on launch: it builds a list of non-hidden rocket silos and
-      hit nil on the empty result. The rocket-silo entity is no longer hidden; the item,
-      recipe, technology, and Factoriopedia entry still are.
+    - Fixed a Factory Planner crash on launch. The rocket-silo entity is no longer
+      hidden; the item, recipe, technology, and Factoriopedia entry still are.
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.1
 Date: 10. 08. 2026
   Bugfixes:
-    - Added the seven missing recipe-name locale entries (custom recycling recipes showed
-      "Unknown key" in Factoriopedia). Upstream bug, newly visible in 2.1.
-    - Fixed "Carbon solidficaiton" typo.
+    - Named the custom recycling recipes; they showed as "Unknown key" in Factoriopedia.
+    - Fixed a typo in "Carbon solidification".
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.0
 Date: 10. 08. 2026
   Features:
-    - New toolbar shortcut: found an additional platform in the current orbit. Consumes a
-      space platform starter pack from the current platform's hub. Platformer has no
-      planets to launch starter packs from, so the vanilla create-platform flow is
-      unreachable; the shortcut replaces it.
-    - New platforms are ordinary platforms: Factorio 2.1's native platform-to-platform
-      transfers (orbital requests sourced from platforms, provider checkbox) work between
-      them, and hub chests on each platform feed that platform's own hub.
+    - Toolbar shortcut: found another platform in the current orbit, paid with a starter
+      pack from the hub. New platforms are ordinary platforms; 2.1 transfers work between
+      them, and each platform's chests feed its own hub.
     - Remote interface: remote.call("platformer", "new_platform", force, platform).
 ---------------------------------------------------------------------------------------------------
 Version: 1.1.0
 Date: 09. 08. 2026
   Changes:
-    - Ported to Factorio 2.1 and renamed to platformer-fork (original by Corlin & Xiroc, GPLv3).
-    - Depends on space-platform-chests-fork; incompatible with the upstream mods (same
-      prototype names). Saves started with the upstream mods are adopted on first load:
-      the existing platform is re-registered instead of creating a new one.
-    - Recipe product 'probability' fields renamed to 'independent_probability' (2.1 rename).
-    - lava-stone-to-coal moved to the 'crafting-with-fluid' category; 2.1 rejects fluid
-      ingredients in the hand-craftable 'crafting' category, and uses the new 'categories' list.
+    - Ported to Factorio 2.1; renamed to platformer-fork (original by Corlin & Xiroc, GPLv3).
+    - Incompatible with the upstream mods. Saves started with them are adopted on first load.
+    - Recipe products renamed 'probability' to 'independent_probability' (2.1).
+    - lava-stone-to-coal moved to 'crafting-with-fluid'; 2.1 forbids fluid ingredients in
+      the hand-craftable category.
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.6
 Date: 23. 02. 2025

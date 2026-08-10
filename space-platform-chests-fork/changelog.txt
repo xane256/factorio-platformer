@@ -2,22 +2,16 @@
 Version: 1.0.12
 Date: 10. 08. 2026
   Changes:
-    - Hub lookup is surface-wide instead of probing position (0,0); the engine allows at
-      most one hub per surface, so the first match is the hub.
-    - Chests wake when a hub appears on their surface and re-block when the hub is removed.
-      Both are script/editor-only events: the engine refuses hub creation off platform
-      surfaces, and normal play cannot destroy a hub without destroying the platform.
+    - Hub lookup is surface-wide instead of probing (0,0).
+    - Chests wake when a hub appears on their surface and re-block when it is removed.
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.11
 Date: 09. 08. 2026
   Changes:
-    - Ported to Factorio 2.1 and renamed to space-platform-chests-fork (original by Corlin,
-      GPLv3). Hub chests from an
-      upstream-mod save are re-registered on first load.
-    - Fixed a crash when a hub-chest is built or blueprint-pasted on a surface with no
-      platform hub (an Editor Extensions lab, any non-platform surface). The hub lookup was
-      already per-surface, but the missing-hub result was dereferenced unguarded. Hubless
-      chests are now left unregistered and blocked (bar at slot 1), so they act full.
+    - Ported to Factorio 2.1; renamed to space-platform-chests-fork (original by Corlin,
+      GPLv3). Hub chests from an upstream save are re-registered on first load.
+    - Fixed a crash when a hub-chest is built or pasted on a surface with no hub. Such
+      chests now act full.
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.10
 Date: 21. 12. 2024
