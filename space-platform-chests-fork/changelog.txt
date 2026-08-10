@@ -3,8 +3,8 @@ Version: 1.0.11
 Date: 09. 08. 2026
   Changes:
     - Ported to Factorio 2.1 and renamed to space-platform-chests-fork (original by Corlin,
-      GPLv3). Hub chests from an upstream-mod save are re-registered on first load. No other code changes
-      required beyond the factorio_version bump.
+      GPLv3). Hub chests from an
+      upstream-mod save are re-registered on first load.
     - Fixed a crash when a hub-chest is built or blueprint-pasted on a surface with no
       platform hub (an Editor Extensions lab, any non-platform surface). The hub lookup was
       already per-surface, but the missing-hub result was dereferenced unguarded. Hubless
