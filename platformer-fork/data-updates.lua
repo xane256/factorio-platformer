@@ -40,3 +40,6 @@ for entity_name in pairs(defines.prototypes.entity) do
         end
     end
 end
+-- Blueprints stop capturing the hub. A pasted hub ghost errors on any
+-- surface without one, and on a platform the hub already exists.
+table.insert(data.raw["space-platform-hub"]["space-platform-hub"].flags, "not-blueprintable")

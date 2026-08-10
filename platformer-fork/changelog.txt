@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.3.2
+Date: 10. 08. 2026
+  Bugfixes:
+    - Blueprints no longer capture the platform hub; pasting one on a hubless surface
+      errored with "Can't place as ghost". Blueprints made before this version still
+      contain the hub; re-create them to clear it.
+---------------------------------------------------------------------------------------------------
 Version: 1.3.1
 Date: 10. 08. 2026
   Bugfixes:
