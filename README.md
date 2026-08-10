@@ -1,57 +1,72 @@
 # factorio-platformer
 
-Fork of two Factorio mods by Corlin (GPLv3), ported to Factorio 2.1 and
+Forks of two GPLv3 Factorio mods by Corlin, ported to Factorio 2.1 and
 renamed so they can live on the mod portal alongside the originals:
 
-- **`platformer-fork/`** — fork of [Platformer](https://mods.factorio.com/mod/platformer),
-  a skyblock-style Space Age overhaul: you live on a single space platform,
-  never land, and feed the factory from asteroids. Upstream 1.0.6 targeted 2.0.
-- **`space-platform-chests-fork/`** — fork of
-  [Space Platform Chests](https://mods.factorio.com/mod/space-platform-chests),
-  its dependency (hub-teleport chests), same author.
+- [platformer-fork](https://mods.factorio.com/mod/platformer-fork) — fork of
+  [Platformer](https://mods.factorio.com/mod/platformer) by Corlin & Xiroc: a
+  skyblock-style Space Age overhaul. You live on a space platform, never
+  land, and feed the factory from passing asteroids.
+- [space-platform-chests-fork](https://mods.factorio.com/mod/space-platform-chests-fork)
+  — fork of [Space Platform Chests](https://mods.factorio.com/mod/space-platform-chests)
+  by Corlin: chests that teleport their contents into the platform hub.
+  Required by platformer-fork.
 
-The first commit is the pristine upstream zips; everything after it is the
-port. Port details live in each mod's `changelog.txt`. The 2.1 breakage was
-confined to the prototype stage (recipe product and category schema changes);
-the control-stage code already used 2.0-era APIs that 2.1 kept.
+## Playing
 
-Prototype names ("hub-chest", asteroid and recipe names) are unchanged from
-upstream, so the forks declare `!` incompatibility with the upstream mods —
-enabling both would collide. Saves started with the upstream mods do not carry
-over: the mod names differ, and Factorio treats them as unrelated mods.
+Install both from the mod portal. The forks refuse to run alongside the
+upstream mods: prototype names are unchanged, so the two copies would
+collide. Unchanged names are also what makes upstream saves portable — load
+one, swap the forks in on the mod-sync screen, and the mods adopt it on
+first load. The platform, hub chests, researched techs, and everything
+placed carry over.
 
-## Test loop
+Beyond the port, the forks change gameplay in three ways:
 
-`.modtest/` (gitignored) symlinks both mod dirs next to a `mod-list.json` so
-the game loads the working tree directly. Against the Steam install:
+- A hub-chest on a surface with no hub — an Editor Extensions lab, any
+  non-platform surface — acts as a full chest. Upstream crashed on
+  blueprint-pasting one there; in multiplayer the paste killed the server.
+- A toolbar shortcut founds an additional platform in the current orbit,
+  consuming a space platform starter pack from the hub. Vanilla founds
+  platforms from a planetside silo; Platformer has no planets to build one
+  on. Also callable as `remote.call("platformer", "new_platform", force,
+  platform)`.
+- Founded platforms are ordinary vanilla platforms. Factorio 2.1's
+  platform-to-platform transfers work between them, and hub chests on each
+  platform feed that platform's own hub.
+
+## Working on it
+
+Each mod directory is the unzipped mod. The first commit is the pristine
+upstream release, so `git log` reads as the complete port; user-facing
+changes also land in each mod's `changelog.txt`.
+
+The game can load the working tree directly through a directory of
+symlinks. Build it once:
 
 ```sh
-FA="$HOME/Library/Application Support/Steam/steamapps/common/Factorio/factorio.app/Contents/MacOS/factorio"
-
-# data stage + on_init: creates a map, exits. Errors print to stdout.
-"$FA" --mod-directory "$PWD/.modtest" --create /tmp/test-map.zip
-
-# control stage: run the map headless for a minute of game time.
-"$FA" --mod-directory "$PWD/.modtest" --benchmark /tmp/test-map.zip --benchmark-ticks 3600 --disable-audio
+mkdir .modtest && cp test/mod-list.json .modtest/
+ln -s "$PWD"/platformer-fork "$PWD"/space-platform-chests-fork "$PWD"/test/spc-test .modtest/
 ```
 
-The binary exits 0 even on load errors; read the output, not the exit code.
-Neither step creates a player, so `on_player_created` (character destroy +
-teleport to the platform) is only exercised by starting a real game.
+Then, against a Factorio 2.1 install (`FA` = path to its binary):
 
-## Packaging
+```sh
+"$FA" --mod-directory "$PWD/.modtest" --create /tmp/test-map.zip
+"$FA" --mod-directory "$PWD/.modtest" --benchmark /tmp/test-map.zip --benchmark-ticks 900 --disable-audio
+```
 
-Zip each mod dir as `<name>_<version>/` (dir name must match `info.json`) and
-drop the zips in `~/Library/Application Support/factorio/mods/`. Include
-`LICENSE` in each zip: GPLv3 requires the license text to travel with the
-distribution.
+`--create` runs the prototype stage plus `on_init` — platform creation,
+starter pack, save adoption. `--benchmark` then exercises control-stage
+code: `test/spc-test` stages a scenario each 120 ticks (hubless chest
+blocked, chest-to-hub teleport, sibling platform founded, hub destroyed and
+chests re-blocked) and logs one `SPCTEST:` line per check, each stating the
+value it wants. The binary exits 0 even on load errors, so read the output,
+not the exit code. No headless run covers `on_player_created` (it needs a
+real player join) or GUI feel.
 
-## Publishing
+`scripts/publish.sh` uploads any committed mod version the portal lacks,
+creating the portal entry on first publish. It reads the API key from
+`~/.config/factorio-portal-key` and refuses a dirty tree.
 
-Both mods publish to the mod portal under the fork names via the
-[publish API](https://wiki.factorio.com/Mod_publish_API): `init_publish` with
-an API key (factorio.com profile -> API keys, "ModPortal: Publish Mods"
-permission), then POST the zip to the returned upload URL, which also accepts
-description, category, license, and source_url fields. Subsequent releases use
-the [upload API](https://wiki.factorio.com/Mod_upload_API) ("ModPortal: Upload
-Mods" permission) against the existing mod name.
+GPLv3, as upstream.
