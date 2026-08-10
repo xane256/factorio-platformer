@@ -24,7 +24,10 @@ script.on_event(
         .on_space_platform_built_entity, defines.events.script_raised_built },
     function(e)
         local entity = e.entity
-        if entity and entity.valid and entity.name == "hub-chest" and entity.type == "container" then
+        if not (entity and entity.valid) then
+            return
+        end
+        if entity.name == "hub-chest" and entity.type == "container" then
             local set = register_hub_chest(entity)
             init_hub_chest_with_filters(entity)
             if set.hub then
@@ -32,8 +35,59 @@ script.on_event(
             else
                 block_hubless_chest(entity)
             end
+        elseif entity.name == "space-platform-hub" then
+            adopt_surface_chests(entity)
         end
     end)
+
+-- A hub appeared (script or editor; the engine allows at most one per
+-- surface). Wake every blocked chest on its surface.
+function adopt_surface_chests(hub)
+    for _, chest in pairs(hub.surface.find_entities_filtered({ name = "hub-chest" })) do
+        if not is_registered(chest) then
+            local set = { chest = chest, hub = hub }
+            table.insert(storage.hub_chests, set)
+            init_hub_chest_with_filters(chest)
+            create_wire_connection(set)
+        end
+    end
+end
+
+function is_registered(chest)
+    for _, set in ipairs(storage.hub_chests) do
+        if set.chest.valid and set.chest == chest then
+            return true
+        end
+    end
+    return false
+end
+
+-- The hub is gone but its surface survives (script/editor removal; platform
+-- death deletes the surface and takes the chests with it). Re-block the
+-- orphaned chests so they act full again instead of hoarding items.
+script.on_event(
+    { defines.events.on_entity_died, defines.events.script_raised_destroy,
+        defines.events.on_player_mined_entity, defines.events.on_robot_mined_entity,
+        defines.events.on_space_platform_mined_entity },
+    function(e)
+        local entity = e.entity
+        if entity and entity.valid and entity.name == "space-platform-hub" then
+            release_surface_chests(entity)
+        end
+    end)
+
+function release_surface_chests(hub)
+    for i = #storage.hub_chests, 1, -1 do
+        local set = storage.hub_chests[i]
+        if set.hub == hub then
+            table.remove(storage.hub_chests, i)
+            storage.global_index = 1
+            if set.chest.valid then
+                block_hubless_chest(set.chest)
+            end
+        end
+    end
+end
 
 script.on_nth_tick(1, function(event)
     if storage.hub_chests == nil or #storage.hub_chests == 0 then
@@ -107,6 +161,9 @@ end
 
 function is_data_set_valid(set)
     if not (set.chest.valid and set.hub and set.hub.valid) then
+        if set.chest.valid then
+            block_hubless_chest(set.chest)
+        end
         remove_set_from_storage(set)
         storage.global_index = 1 -- don't bother to handele it, just start over in next iteration
         return false
@@ -140,8 +197,9 @@ end
 -- Surfaces without a hub (labs, sandboxes) get no registration; the caller
 -- blocks the chest instead, so per-tick logic only ever sees live hubs.
 function register_hub_chest(chest)
-    local surface = chest.surface
-    local hub = surface.find_entity("space-platform-hub", { 0, 0 })
+    -- Surface-wide lookup, not a probe at (0,0): the engine allows one hub
+    -- per surface but scripts and the editor can put it anywhere.
+    local hub = chest.surface.find_entities_filtered({ name = "space-platform-hub", limit = 1 })[1]
     local set = { chest = chest, hub = hub }
     if hub then
         table.insert(storage.hub_chests, set)
