@@ -83,39 +83,37 @@ script.on_nth_tick(120, function()
         end
         storage.stage = 6
     elseif storage.stage == 2 then
-        -- Found a sibling platform via the platformer remote interface.
-        local pc = storage.platform_chest
+        -- Create a platform in waiting_for_starter_pack (the native + button
+        -- flow); the mod's scan should fulfill it from Base One's hub.
         local force = game.forces.player
         local base = nil
         for _, pl in pairs(force.platforms) do base = pl break end
         if base and base.hub then
             base.hub.insert({ name = "space-platform-starter-pack", count = 1 })
-            local sibling = remote.call("platformer", "new_platform", force, base)
-            if sibling then
-                local n = 0
-                for _ in pairs(force.platforms) do n = n + 1 end
-                log("SPCTEST: sibling '" .. sibling.name .. "' founded; force has " .. n ..
-                    " platforms (want 2); starter packs left in old hub: " ..
-                    base.hub.get_item_count("space-platform-starter-pack") .. " (want 0)")
-                storage.sibling = sibling
-            else
-                log("SPCTEST: FAIL sibling not created")
-            end
+            local sibling = force.create_space_platform({ name = "Base 2", planet = "nauvis", starter_pack = "space-platform-starter-pack" })
+            log("SPCTEST: sibling created, state=" .. sibling.state .. " (want " .. defines.space_platform_state.waiting_for_starter_pack .. ": waiting)")
+            storage.sibling = sibling
         else
             log("SPCTEST: skipping sibling stage, no base platform hub")
         end
         storage.stage = 3
     elseif storage.stage == 3 then
-        -- Chest on the sibling platform feeds the sibling's own hub.
+        -- 120 ticks later the scan (60-tick cadence) must have fulfilled it.
         local sib = storage.sibling
-        if sib and sib.valid and sib.hub and sib.hub.valid then
-            local c = sib.hub.surface.create_entity({ name = "hub-chest", position = { 6, 6 }, force = "player", raise_built = true })
-            if c and c.valid then
-                local n = c.get_inventory(defines.inventory.chest).insert({ name = "solar-panel", count = 4 })
-                log("SPCTEST: sibling chest built, seeded " .. n .. " solar panels")
-                storage.sibling_chest = c
-            else
-                log("SPCTEST: FAIL sibling chest not created")
+        local force = game.forces.player
+        local base = nil
+        for _, pl in pairs(force.platforms) do base = pl break end
+        if sib and sib.valid then
+            log("SPCTEST: sibling state=" .. sib.state .. " (want not " .. defines.space_platform_state.waiting_for_starter_pack ..
+                "), hub=" .. tostring(sib.hub ~= nil) .. " (want true), packs left in old hub: " ..
+                base.hub.get_item_count("space-platform-starter-pack") .. " (want 0)")
+            if sib.hub then
+                local c = sib.hub.surface.create_entity({ name = "hub-chest", position = { 6, 6 }, force = "player", raise_built = true })
+                if c and c.valid then
+                    local n = c.get_inventory(defines.inventory.chest).insert({ name = "solar-panel", count = 4 })
+                    log("SPCTEST: sibling chest built, seeded " .. n .. " solar panels")
+                    storage.sibling_chest = c
+                end
             end
         end
         storage.stage = 4

@@ -1,4 +1,16 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.3.0
+Date: 10. 08. 2026
+  Features:
+    - New platforms now go through the native "+ Add Space Platform" UI (name, orbit, and
+      starter pack quality). A platform waiting for its pack is fulfilled from any hub on
+      the force that holds the requested pack, standing in for the planetside rocket silo.
+    - Removed the 1.2.0 toolbar shortcut and remote interface; the native flow covers them.
+  Bugfixes:
+    - Factory Planner crashed on launch: it builds a list of non-hidden rocket silos and
+      hit nil on the empty result. The rocket-silo entity is no longer hidden; the item,
+      recipe, technology, and Factoriopedia entry still are.
+---------------------------------------------------------------------------------------------------
 Version: 1.2.1
 Date: 10. 08. 2026
   Bugfixes:

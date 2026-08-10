@@ -22,9 +22,9 @@ Gameplay changes beyond the port:
 
 - If you paste a hub-chest onto a surface with no hub (an Editor Extensions
   lab), it just sits there acting full. The original mod crashed.
-- A toolbar shortcut founds another platform in the current orbit, consuming
-  a starter pack from the hub — normally you'd need a planetside silo, but
-  Platformer has no planets.
+- The native "+ Add Space Platform" button works: a starter pack in any of
+  your hubs stands in for the planetside silo that would normally deliver
+  it.
 - Founded platforms are ordinary vanilla platforms: 2.1 transfers work
   between them, and each platform's chests feed its own hub.
 

@@ -115,7 +115,6 @@ itemsToHide = {
     roboport = { "roboport" },
     offshore_pump = { "offshore-pump" },
     lightning_attractor = { "lightning-collector", "lightning-rod" },
-    rocket_silo = { "rocket-silo" },
     artillery_turret = { "artillery-turret" },
     fluid_turret = { "flamethrower-turret" },
     asteroid_chunk = { "carbonic-asteroid-chunk" },
@@ -128,3 +127,9 @@ for key, itemArray in pairs(itemsToHide) do
         data.raw[key:gsub("_", "-")][item].hidden = true;
     end
 end
+
+-- The rocket-silo entity stays visible: mods that build reference lists of
+-- silos filter hidden entities and can crash on an empty list (Factory
+-- Planner's item views). The item above, recipe, and technology stay
+-- disabled, and Factoriopedia still hides the entity.
+data.raw["rocket-silo"]["rocket-silo"].hidden_in_factoriopedia = true
