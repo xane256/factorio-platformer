@@ -1,0 +1,13 @@
+{
+  "name": "space-platform-chests-fork",
+  "version": "1.0.11",
+  "title": "Space Platform Chests (2.1 Fork)",
+  "author": "xane256 (fork of Space Platform Chests by Corlin)",
+  "factorio_version": "2.1",
+  "dependencies": [
+    "base >= 2.0.0",
+    "space-age >= 2.0.0",
+    "! space-platform-chests"
+  ],
+  "description": "Fork of Corlin's Space Platform Chests, ported to Factorio 2.1. Add chests that can teleport placeable items into your space platform hub, making it easier to create a self sustaining platform."
+}

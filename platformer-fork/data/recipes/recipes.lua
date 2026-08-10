@@ -1,0 +1,7 @@
+require("__platformer-fork__/data/recipes/orbit-aquilo-recipes.lua")
+require("__platformer-fork__/data/recipes/orbit-fulgora-recipes.lua")
+require("__platformer-fork__/data/recipes/orbit-gleba-recipes.lua")
+require("__platformer-fork__/data/recipes/orbit-nauvis-recipes.lua")
+require("__platformer-fork__/data/recipes/oribt-vulcanus-recipes.lua")
+require("__platformer-fork__/data/recipes/modified-recipes.lua")
+require("__platformer-fork__/data/recipes/disabled-recipes.lua")
