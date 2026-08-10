@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.2.1
+Date: 10. 08. 2026
+  Bugfixes:
+    - Added the seven missing recipe-name locale entries (custom recycling recipes showed
+      "Unknown key" in Factoriopedia). Upstream bug, newly visible in 2.1.
+    - Fixed "Carbon solidficaiton" typo.
+---------------------------------------------------------------------------------------------------
 Version: 1.2.0
 Date: 10. 08. 2026
   Features:
