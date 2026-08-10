@@ -40,3 +40,7 @@ for entity_name in pairs(defines.prototypes.entity) do
         end
     end
 end
+-- The hub stays blueprintable on purpose: a platform blueprint's hub snaps
+-- to the real hub at (0,0), anchoring the paste on a new platform. The cost
+-- is a harmless "Can't place as ghost" when pasting on a hubless surface;
+-- shift-paste there places everything but the hub, no error.
