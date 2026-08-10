@@ -1,5 +1,6 @@
 require("__platformer-fork__/lib/lib.lua")
 require("__platformer-fork__/data/prototypes/tips-and-tricks.lua")
+require("__platformer-fork__/data/prototypes/shortcuts.lua")
 
 require("__platformer-fork__/data/prototypes/asteroids/aquilo-asteroid.lua")
 require("__platformer-fork__/data/prototypes/asteroids/crudeic-asteroid.lua")

@@ -1,4 +1,16 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.2.0
+Date: 10. 08. 2026
+  Features:
+    - New toolbar shortcut: found an additional platform in the current orbit. Consumes a
+      space platform starter pack from the current platform's hub. Platformer has no
+      planets to launch starter packs from, so the vanilla create-platform flow is
+      unreachable; the shortcut replaces it.
+    - New platforms are ordinary platforms: Factorio 2.1's native platform-to-platform
+      transfers (orbital requests sourced from platforms, provider checkbox) work between
+      them, and hub chests on each platform feed that platform's own hub.
+    - Remote interface: remote.call("platformer", "new_platform", force, platform).
+---------------------------------------------------------------------------------------------------
 Version: 1.1.0
 Date: 09. 08. 2026
   Changes:

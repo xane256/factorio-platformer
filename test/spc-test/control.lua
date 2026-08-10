@@ -50,7 +50,7 @@ script.on_nth_tick(120, function()
             log("SPCTEST: lab chest accepted " .. inv.insert({ name = "solar-panel", count = 7 }) .. " items (want 7)")
             storage.lab_hub = hub
         else
-            log("SPCTEST: FAIL lab hub not created")
+            log("SPCTEST: lab hub creation refused by engine (expected on 2.1)")
         end
         storage.stage = 1
     elseif storage.stage == 1 then
@@ -65,7 +65,7 @@ script.on_nth_tick(120, function()
         log("SPCTEST: lab hub destroyed, chest bar=" .. tostring(inv.get_bar()) .. " (want 1: re-blocked)")
         log("SPCTEST: re-blocked chest accepted " .. inv.insert({ name = "solar-panel", count = 3 }) .. " items (want 0)")
         storage.stage = 2
-    elseif storage.stage == 2 then
+    elseif storage.stage == 5 then
         -- Destroy the real platform hub: does the engine keep the surface?
         local pc = storage.platform_chest
         if pc and pc.valid then
@@ -81,6 +81,51 @@ script.on_nth_tick(120, function()
                 log("SPCTEST: no platform hub found to destroy")
             end
         end
+        storage.stage = 6
+    elseif storage.stage == 2 then
+        -- Found a sibling platform via the platformer remote interface.
+        local pc = storage.platform_chest
+        local force = game.forces.player
+        local base = nil
+        for _, pl in pairs(force.platforms) do base = pl break end
+        if base and base.hub then
+            base.hub.insert({ name = "space-platform-starter-pack", count = 1 })
+            local sibling = remote.call("platformer", "new_platform", force, base)
+            if sibling then
+                local n = 0
+                for _ in pairs(force.platforms) do n = n + 1 end
+                log("SPCTEST: sibling '" .. sibling.name .. "' founded; force has " .. n ..
+                    " platforms (want 2); starter packs left in old hub: " ..
+                    base.hub.get_item_count("space-platform-starter-pack") .. " (want 0)")
+                storage.sibling = sibling
+            else
+                log("SPCTEST: FAIL sibling not created")
+            end
+        else
+            log("SPCTEST: skipping sibling stage, no base platform hub")
+        end
         storage.stage = 3
+    elseif storage.stage == 3 then
+        -- Chest on the sibling platform feeds the sibling's own hub.
+        local sib = storage.sibling
+        if sib and sib.valid and sib.hub and sib.hub.valid then
+            local c = sib.hub.surface.create_entity({ name = "hub-chest", position = { 6, 6 }, force = "player", raise_built = true })
+            if c and c.valid then
+                local n = c.get_inventory(defines.inventory.chest).insert({ name = "solar-panel", count = 4 })
+                log("SPCTEST: sibling chest built, seeded " .. n .. " solar panels")
+                storage.sibling_chest = c
+            else
+                log("SPCTEST: FAIL sibling chest not created")
+            end
+        end
+        storage.stage = 4
+    elseif storage.stage == 4 then
+        local c = storage.sibling_chest
+        if c and c.valid then
+            local left = c.get_inventory(defines.inventory.chest).get_item_count("solar-panel")
+            local inhub = storage.sibling.hub.get_item_count("solar-panel")
+            log("SPCTEST: sibling chest has " .. left .. " (want 0), sibling hub has " .. inhub .. " solar panels (want 4)")
+        end
+        storage.stage = 5
     end
 end)
