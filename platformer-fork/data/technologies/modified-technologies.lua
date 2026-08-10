@@ -66,6 +66,11 @@ data.raw.technology["space-platform"].effects = {
         recipe = "cargo-bay"
     },
     {
+        -- Vanilla unlocks this in rocket-silo, which Platformer disables.
+        type = "unlock-recipe",
+        recipe = "space-platform-starter-pack"
+    },
+    {
         type = "unlock-recipe",
         recipe = "space-platform-foundation"
     },
