@@ -1,0 +1,8 @@
+{
+  "name": "spc-test",
+  "version": "0.0.1",
+  "title": "spc test harness",
+  "author": "test",
+  "factorio_version": "2.1",
+  "dependencies": [ "platformer-fork", "space-platform-chests-fork" ]
+}

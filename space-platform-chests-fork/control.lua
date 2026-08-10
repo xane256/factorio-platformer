@@ -12,6 +12,8 @@ script.on_init(function(e)
             if set.hub then
                 create_wire_connection(set)
                 log("space-platform-chests-fork: adopted hub-chest on " .. surface.name)
+            else
+                block_hubless_chest(chest)
             end
         end
     end
@@ -22,10 +24,14 @@ script.on_event(
         .on_space_platform_built_entity, defines.events.script_raised_built },
     function(e)
         local entity = e.entity
-        if entity.name == "hub-chest" and entity.type == "container" then
-            set = register_hub_chest(entity)
+        if entity and entity.valid and entity.name == "hub-chest" and entity.type == "container" then
+            local set = register_hub_chest(entity)
             init_hub_chest_with_filters(entity)
-            create_wire_connection(set)
+            if set.hub then
+                create_wire_connection(set)
+            else
+                block_hubless_chest(entity)
+            end
         end
     end)
 
@@ -100,7 +106,7 @@ function item_filter(item)
 end
 
 function is_data_set_valid(set)
-    if not set.chest.valid then
+    if not (set.chest.valid and set.hub and set.hub.valid) then
         remove_set_from_storage(set)
         storage.global_index = 1 -- don't bother to handele it, just start over in next iteration
         return false
@@ -130,12 +136,23 @@ function teleport_items_to_hub_from_chest(chest, hub)
     end
 end
 
+-- Registers the chest for hub teleport when its own surface has a hub.
+-- Surfaces without a hub (labs, sandboxes) get no registration; the caller
+-- blocks the chest instead, so per-tick logic only ever sees live hubs.
 function register_hub_chest(chest)
     local surface = chest.surface
     local hub = surface.find_entity("space-platform-hub", { 0, 0 })
     local set = { chest = chest, hub = hub }
-    table.insert(storage.hub_chests, { chest = chest, hub = hub })
+    if hub then
+        table.insert(storage.hub_chests, set)
+    end
     return set
+end
+
+-- A hub-chest with no hub to feed acts full: bar at slot 1 blocks every
+-- slot, so inserters and bots treat it exactly like a full chest.
+function block_hubless_chest(chest)
+    chest.get_inventory(defines.inventory.chest).set_bar(1)
 end
 
 function create_wire_connection(set)
