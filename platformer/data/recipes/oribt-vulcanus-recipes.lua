@@ -42,6 +42,7 @@ lava_stone_to_carbon.localised_name = { "recipe-name.lava-stone-to-carbon" }
 lava_stone_to_carbon.icon = "__space-age__/graphics/icons/carbon.png"
 lava_stone_to_carbon.enabled = false
 lava_stone_to_carbon.order = "m"
+lava_stone_to_carbon.categories = { "crafting-with-fluid" }
 lava_stone_to_carbon.ingredients =
 {
     { type = "item",  name = "lava-stone", amount = 1 },
