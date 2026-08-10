@@ -4,7 +4,8 @@ Date: 09. 08. 2026
   Changes:
     - Ported to Factorio 2.1 and renamed to platformer-fork (original by Corlin & Xiroc, GPLv3).
     - Depends on space-platform-chests-fork; incompatible with the upstream mods (same
-      prototype names).
+      prototype names). Saves started with the upstream mods are adopted on first load:
+      the existing platform is re-registered instead of creating a new one.
     - Recipe product 'probability' fields renamed to 'independent_probability' (2.1 rename).
     - lava-stone-to-coal moved to the 'crafting-with-fluid' category; 2.1 rejects fluid
       ingredients in the hand-craftable 'crafting' category, and uses the new 'categories' list.

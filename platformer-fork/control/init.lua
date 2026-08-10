@@ -1,11 +1,26 @@
 script.on_init(function(e)
     disable_cutsceene()
-    create_space_platform()
-    set_starting_items()
     create_permission_group()
-    shrink_the_world(game.surfaces[1])
-    delete_all_chunks(game.surfaces[1])
+    if adopt_existing_platform() then
+        -- Save started with the upstream platformer mod. Its storage is gone,
+        -- but the world state carries over because prototype names are unchanged.
+        regenerate_tech_tree()
+    else
+        create_space_platform()
+        set_starting_items()
+        shrink_the_world(game.surfaces[1])
+        delete_all_chunks(game.surfaces[1])
+    end
 end)
+
+function adopt_existing_platform()
+    for _, platform in pairs(game.forces["player"].platforms) do
+        storage.platform = platform
+        log("platformer-fork: adopted existing platform '" .. platform.name .. "'")
+        return true
+    end
+    return false
+end
 
 script.on_event(defines.events.on_player_created, function(e)
     local player = game.players[e.player_index]
@@ -37,6 +52,10 @@ end)
 
 --Regenerate the tech tree any time anything could have changed the tech tree.
 script.on_configuration_changed(function()
+    regenerate_tech_tree()
+end)
+
+function regenerate_tech_tree()
     for _, force in pairs(game.forces) do
         for _, technology in pairs(force.technologies) do
             technology.reload()
@@ -47,7 +66,7 @@ script.on_configuration_changed(function()
         force.reset_technologies()
         force.reset_technology_effects()
     end
-end)
+end
 
 function delete_all_chunks(surface)
     for chunk in surface.get_chunks() do
@@ -61,7 +80,7 @@ function shrink_the_world(surface)
 end
 
 function create_permission_group()
-    local group = game.permissions.create_group("players")
+    local group = game.permissions.get_group("players") or game.permissions.create_group("players")
     if group then
         group.set_allows_action(defines.input_action.land_at_planet, false)
     end

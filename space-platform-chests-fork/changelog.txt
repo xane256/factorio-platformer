@@ -3,7 +3,7 @@ Version: 1.0.11
 Date: 09. 08. 2026
   Changes:
     - Ported to Factorio 2.1 and renamed to space-platform-chests-fork (original by Corlin,
-      GPLv3). No code changes
+      GPLv3). Hub chests from an upstream-mod save are re-registered on first load. No other code changes
       required beyond the factorio_version bump.
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.10

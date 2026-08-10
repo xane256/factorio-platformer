@@ -2,6 +2,19 @@
 script.on_init(function(e)
     storage.hub_chests = {}
     storage.global_index = 1
+
+    -- Adopt chests placed by the upstream mod: its registry died with its
+    -- storage, but the entities survive because prototype names are unchanged.
+    -- Filters and wires persist on the entities; only registration is rebuilt.
+    for _, surface in pairs(game.surfaces) do
+        for _, chest in pairs(surface.find_entities_filtered({ name = "hub-chest" })) do
+            local set = register_hub_chest(chest)
+            if set.hub then
+                create_wire_connection(set)
+                log("space-platform-chests-fork: adopted hub-chest on " .. surface.name)
+            end
+        end
+    end
 end)
 
 script.on_event(
