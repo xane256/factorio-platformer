@@ -1,4 +1,5 @@
 require("__space-platform-chests-fork__/tips-and-tricks.lua")
+require("__space-platform-chests-fork__/hub-unloading-bay.lua")
 
 
 local item_name = "hub-chest"

@@ -40,8 +40,10 @@ itemsToHide = {
         "exoskeleton-equipment",
         "belt-immunity-equipment",
         "flamethrower-turret",
-        "artillery-turret"
+        "artillery-turret",
+        "landing-pad-unloading-bay"
     },
+    cargo_bay = { "landing-pad-unloading-bay" },
     container = {
         "wooden-chest"
     },

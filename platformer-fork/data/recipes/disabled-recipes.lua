@@ -74,6 +74,7 @@ local hidden_recipes = {
     "artillery-turret",
     "flamethrower-ammo",
     "cargo-landing-pad",
+    "landing-pad-unloading-bay",
     "carbonic-asteroid-crushing"
 }
 

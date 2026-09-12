@@ -1,13 +1,13 @@
 {
   "name": "platformer-fork",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "title": "Platformer (2.1 Fork)",
   "author": "xane256 (fork of Platformer by Corlin & Xiroc)",
   "factorio_version": "2.1",
   "dependencies": [
     "base >= 2.0.0",
     "space-age >= 2.0.23",
-    "space-platform-chests-fork >= 1.0.11",
+    "space-platform-chests-fork >= 1.1.0",
     "quality >= 2.0.23",
     "elevated-rails >= 2.0.23",
     "! platformer",

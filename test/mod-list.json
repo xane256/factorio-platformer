@@ -41,6 +41,10 @@
     {
       "name": "spc-test",
       "enabled": true
+    },
+    {
+      "name": "bay-test",
+      "enabled": true
     }
   ]
 }

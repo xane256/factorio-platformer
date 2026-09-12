@@ -75,7 +75,8 @@ local remove_technologies = {
     "artillery-shell-range-1",
     "artillery",
     "logistic-robotics",
-    "rocket-silo"
+    "rocket-silo",
+    "landing-pad-unloading-bay"
 }
 
 platformer.technology.remove_many(remove_technologies)

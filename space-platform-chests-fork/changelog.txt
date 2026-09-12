@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.0
+Date: 12. 09. 2026
+  Features:
+    - Hub unloading bay: a cargo bay inserters can unload the hub through, like the 2.1 landing
+      pad unloading bay. Items dropped on its outer edge go into the hub. Unlocked after space
+      science. Vanilla landing pad unloading bays already on a platform are converted in place.
+---------------------------------------------------------------------------------------------------
 Version: 1.0.12
 Date: 10. 08. 2026
   Changes:

@@ -1,7 +1,10 @@
+local bays = require("__space-platform-chests-fork__/unloading-bay.lua")
+
 
 script.on_init(function(e)
     storage.hub_chests = {}
     storage.global_index = 1
+    bays.adopt_bays()
 
     -- Adopt chests placed by the upstream mod: its registry died with its
     -- storage, but the entities survive because prototype names are unchanged.
@@ -35,10 +38,15 @@ script.on_event(
             else
                 block_hubless_chest(entity)
             end
+        elseif entity.name == bays.BAY then
+            bays.attach_proxy(entity)
         elseif entity.name == "space-platform-hub" then
             adopt_surface_chests(entity)
+            bays.retarget_surface_bays(entity)
         end
     end)
+
+script.on_configuration_changed(bays.adopt_bays)
 
 -- A hub appeared (script or editor; the engine allows at most one per
 -- surface). Wake every blocked chest on its surface.
@@ -71,8 +79,11 @@ script.on_event(
         defines.events.on_space_platform_mined_entity },
     function(e)
         local entity = e.entity
-        if entity and entity.valid and entity.name == "space-platform-hub" then
+        if not (entity and entity.valid) then return end
+        if entity.name == "space-platform-hub" then
             release_surface_chests(entity)
+        elseif entity.name == bays.BAY then
+            bays.detach_proxy(entity)
         end
     end)
 

@@ -1,0 +1,8 @@
+{
+  "name": "bay-test",
+  "version": "0.0.1",
+  "title": "hub unloading bay test harness",
+  "author": "test",
+  "factorio_version": "2.1",
+  "dependencies": [ "platformer-fork", "space-platform-chests-fork" ]
+}
