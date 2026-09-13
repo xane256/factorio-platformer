@@ -6,21 +6,21 @@ data.raw.recipe["space-platform-foundation"].ingredients = {
     { type = "item", name = "iron-plate",   amount = 10 },
     { type = "item", name = "copper-cable", amount = 5 }
 }
-data.raw.recipe["space-platform-foundation-recycling"].results = {
+platformer.recipe.set_recycling_results("space-platform-foundation-recycling", {
     {
         type = "item", name = "iron-plate", amount = 2, extra_count_fraction = 0.5
     },
     {
         type = "item", name = "copper-cable", amount = 1, extra_count_fraction = 0.25
     }
-}
+})
 
 data.raw.recipe["electric-furnace"].ingredients = {
     { type = "item", name = "iron-plate",         amount = 60 },
     { type = "item", name = "electronic-circuit", amount = 5 },
     { type = "item", name = "stone-brick",        amount = 10 }
 }
-data.raw.recipe["electric-furnace-recycling"].results = {
+platformer.recipe.set_recycling_results("electric-furnace-recycling", {
     {
         type = "item", name = "iron-plate", amount = 15
     },
@@ -30,7 +30,7 @@ data.raw.recipe["electric-furnace-recycling"].results = {
     {
         type = "item", name = "stone-brick", amount = 2, extra_count_fraction = 0.5
     }
-}
+})
 
 data.raw.recipe["metallic-asteroid-crushing"].results = {
     { type = "item", name = "iron-ore",   amount_min = 5, amount_max = 20 },
@@ -55,7 +55,7 @@ data.raw.recipe["crusher"].ingredients = {
     { type = "item", name = "engine-unit",     amount = 10 },
     { type = "item", name = "iron-gear-wheel", amount = 20 }
 }
-data.raw.recipe["crusher-recycling"].results = {
+platformer.recipe.set_recycling_results("crusher-recycling", {
     {
         type = "item", name = "steel-plate", amount = 2, extra_count_fraction = 0.5
     },
@@ -65,21 +65,21 @@ data.raw.recipe["crusher-recycling"].results = {
     {
         type = "item", name = "iron-gear-wheel", amount = 5
     }
-}
+})
 
 data.raw.recipe["asteroid-collector"].ingredients = {
     { type = "item", name = "electronic-circuit",   amount = 20 },
     { type = "item", name = "engine-unit",          amount = 8 },
     { type = "item", name = "long-handed-inserter", amount = 2 }
 }
-data.raw.recipe["asteroid-collector-recycling"].results = {
+platformer.recipe.set_recycling_results("asteroid-collector-recycling", {
 
     {type = "item", name = "electronic-circuit", amount = 5},
     { type = "item", name = "engine-unit", amount = 2},
     {type = "item", name = "long-handed-inserter", amount = 0, extra_count_fraction = 0.5}
-}
+})
 
-data.raw.recipe["scrap-recycling"].results = {
+platformer.recipe.set_recycling_results("scrap-recycling", {
     { type = "item", name = "processing-unit",       amount = 1, independent_probability = 0.02, show_details_in_recipe_tooltip = false },
     { type = "item", name = "advanced-circuit",      amount = 1, independent_probability = 0.03, show_details_in_recipe_tooltip = false },
     { type = "item", name = "low-density-structure", amount = 1, independent_probability = 0.01, show_details_in_recipe_tooltip = false },
@@ -93,17 +93,17 @@ data.raw.recipe["scrap-recycling"].results = {
     { type = "item", name = "iron-gear-wheel",       amount = 1, independent_probability = 0.20, show_details_in_recipe_tooltip = false },
     { type = "item", name = "copper-cable",          amount = 1, independent_probability = 0.03, show_details_in_recipe_tooltip = false },
     { type = "item", name = "carbon",                amount = 1, independent_probability = 0.03, show_details_in_recipe_tooltip = false }
-}
+})
 
 data.raw.recipe["captive-biter-spawner"].ingredients = {
     { type = "item",  name = "uranium-235",          amount = 15 },
     { type = "item",  name = "capture-robot-rocket", amount = 1 },
     { type = "fluid", name = "fluoroketone-cold",    amount = 100 }
 }
-data.raw.recipe["captive-biter-spawner-recycling"].results = {
+platformer.recipe.set_recycling_results("captive-biter-spawner-recycling", {
     { type = "item",  name = "uranium-235",          amount = 3, extra_count_fraction = 0.75 },
     { type = "item",  name = "capture-robot-rocket", amount = 0, extra_count_fraction = 0.25 }
-}
+})
 
 
 data.raw.recipe["thruster-oxidizer"].ingredients = {
@@ -123,9 +123,9 @@ data.raw.recipe["productivity-module-3"].ingredients = {
     {type = "item", name = "uranium-235", amount = 2},
     {type = "item", name = "productivity-module-2", amount = 4}
 }
-data.raw.recipe["productivity-module-3-recycling"].results = {
+platformer.recipe.set_recycling_results("productivity-module-3-recycling", {
     {type = "item", name = "advanced-circuit", amount = 1, extra_count_fraction = 0.25},
     {type = "item", name = "processing-unit", amount = 1, extra_count_fraction = 0.25},
     {type = "item", name = "uranium-235", amount = 0, extra_count_fraction = 0.5},
     {type = "item", name = "productivity-module-2", amount = 1}
-}
+})
