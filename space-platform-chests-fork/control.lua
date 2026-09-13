@@ -40,8 +40,6 @@ script.on_event(
             end
         elseif entity.name == bays.BAY then
             bays.attach_proxy(entity)
-        elseif entity.name == "landing-pad-unloading-bay" and entity.surface.platform then
-            bays.convert_vanilla(entity)
         elseif entity.name == "space-platform-hub" then
             adopt_surface_chests(entity)
             bays.retarget_surface_bays(entity)

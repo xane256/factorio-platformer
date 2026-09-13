@@ -54,19 +54,6 @@ function M.detach_proxy(bay)
     end
 end
 
--- A vanilla landing-pad unloading bay built on a platform: leftover items
--- from before the hub bay existed. Rebuild it as a hub bay in place.
-function M.convert_vanilla(old)
-    local spec = { name = BAY, position = old.position, direction = old.direction,
-        force = old.force, quality = old.quality }
-    local surface = old.surface
-    old.destroy()
-    local bay = surface.create_entity(spec)
-    if bay then
-        M.attach_proxy(bay)
-    end
-end
-
 -- A hub appeared on the surface: point every bay's proxy at it.
 function M.retarget_surface_bays(hub)
     for _, bay in pairs(hub.surface.find_entities_filtered({ name = BAY })) do
