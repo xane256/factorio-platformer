@@ -51,6 +51,12 @@ script.on_init(function()
     storage.hub = hub
     storage.stage = 0
 
+    -- A vanilla bay placed on the platform (leftover item) becomes a hub bay.
+    local v = s.create_entity({ name = "landing-pad-unloading-bay", position = { 6, -6 }, direction = D.north, force = "player", raise_built = true })
+    local conv = s.find_entities_filtered({ name = BAY, position = { 6, -6 } })[1]
+    log("BAYTEST: vanilla bay placed: still valid=" .. tostring(v ~= nil and v.valid) .. " (want false), hub bay=" .. tname(conv) ..
+        " proxy=" .. tname(conv and proxy_of(conv)) .. " (want hub bay with proxy)")
+
     -- Hubless surface: the bay must build and get a proxy with no target.
     local lab = game.create_surface("bay-test-lab")
     lab.request_to_generate_chunks({ 0, 0 }, 3)

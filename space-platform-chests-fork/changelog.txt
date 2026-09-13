@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.1
+Date: 12. 09. 2026
+  Bugfixes:
+    - A vanilla landing pad unloading bay placed on a platform becomes a hub unloading bay, so
+      items crafted before 1.1.0 are usable.
+---------------------------------------------------------------------------------------------------
 Version: 1.1.0
 Date: 12. 09. 2026
   Features:
