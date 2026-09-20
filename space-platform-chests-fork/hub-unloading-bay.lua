@@ -15,13 +15,14 @@ bay.platform_graphics_set.water_reflection = nil
 bay.platform_graphics_set.connections = require("__space-age__.graphics.entity.cargo-hubs.connections.platform-connections")
 
 -- One proxy per bay, sized to the extractor row. Two shapes because the
--- proxy has no direction of its own.
+-- proxy has no direction of its own. "player-creation" is what lets loaders
+-- see it: inserters target any container, loaders skip ones without the flag.
 local function proxy(name, box)
     return {
         type = "proxy-container",
         name = name,
         hidden = true,
-        flags = { "placeable-off-grid", "not-on-map", "not-blueprintable", "not-deconstructable",
+        flags = { "player-creation", "placeable-off-grid", "not-on-map", "not-blueprintable", "not-deconstructable",
             "not-upgradable", "not-rotatable", "not-repairable", "not-in-kill-statistics", "no-copy-paste" },
         collision_box = box,
         selection_box = box,

@@ -48,6 +48,15 @@ script.on_init(function()
     storage.src.insert({ name = "stone", count = 30 })
     local ins2 = s.create_entity({ name = "burner-inserter", position = { 1.5, -9.5 }, direction = D.north, force = "player", raise_built = true })
     ins2.insert({ name = "coal", count = 5 })
+
+    -- South bay: the same pair as loaders. The hidden vanilla loader stands in
+    -- for modded ones; they share its container lookup.
+    local ldr = s.create_entity({ name = "loader-1x1", position = { -1.5, 9.5 }, direction = D.south, type = "output", force = "player", raise_built = true })
+    ldr.set_filter(1, { name = "copper-plate" })
+    storage.ldr_out = s.create_entity({ name = "transport-belt", position = { -1.5, 10.5 }, direction = D.south, force = "player" })
+    s.create_entity({ name = "loader-1x1", position = { 1.5, 9.5 }, direction = D.north, type = "input", force = "player", raise_built = true })
+    local feed = s.create_entity({ name = "transport-belt", position = { 1.5, 10.5 }, direction = D.north, force = "player" })
+    feed.get_transport_line(1).insert_at_back({ name = "iron-gear-wheel", count = 1 })
     storage.hub = hub
     storage.stage = 0
 
@@ -65,6 +74,7 @@ script.on_nth_tick(300, function(e)
     if storage.stage == 0 then
         log("BAYTEST t=" .. e.tick .. ": out copper=" .. storage.out.get_item_count("copper-plate") .. " (want >0), hub copper=" .. storage.hub.get_item_count("copper-plate") ..
             " (want <100), hub stone=" .. storage.hub.get_item_count("stone") .. " (want >0), src stone=" .. storage.src.get_item_count("stone") .. " (want <30)")
+        log("BAYTEST t=" .. e.tick .. ": loader belt copper=" .. storage.ldr_out.get_item_count("copper-plate") .. " (want >0), hub gears=" .. storage.hub.get_item_count("iron-gear-wheel") .. " (want 1)")
         storage.stage = 1
     elseif storage.stage == 1 then
         -- Mining the east bay must take its proxy with it.

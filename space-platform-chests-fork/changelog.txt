@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.1
+Date: 20. 09. 2026
+  Bugfixes:
+    - Loaders now work on the hub unloading bay's outer edge, in both directions. Loaders already
+      placed against a bay connect on load.
+---------------------------------------------------------------------------------------------------
 Version: 1.1.0
 Date: 12. 09. 2026
   Features:

@@ -29,8 +29,8 @@ Gameplay changes beyond the port:
   between them, and each platform's chests feed its own hub.
 - Hub unloading bay: the 2.1 unloading bay only works on a cargo landing pad,
   by engine design. The chests mod adds a hub version: a cargo bay whose
-  outer edge is a proxy for the hub inventory, so inserters unload the hub
-  through it and items dropped there go in.
+  outer edge is a proxy for the hub inventory, so inserters and loaders unload
+  the hub through it and items dropped there go in.
 
 ## Working on it
 
@@ -51,7 +51,9 @@ ln -s "$PWD"/platformer-fork "$PWD"/space-platform-chests-fork "$PWD"/test/spc-t
 `--create` runs the prototype stage plus `on_init` (platform creation, save
 adoption); `--benchmark` runs `test/spc-test` and `test/bay-test`, which log
 a `SPCTEST:` / `BAYTEST:` line per check with the value it wants. The binary exits 0 even on load errors,
-so check the output. Not covered headlessly: `on_player_created`, GUI feel.
+so check the output. With the game open the default write dir is locked: point
+`--config` at an ini whose `[path]` sets `read-data=__PATH__executable__/../data`
+and `write-data` to a scratch dir. Not covered headlessly: `on_player_created`, GUI feel.
 
 `scripts/publish.sh` uploads whatever committed versions the portal lacks.
 Key in `~/.config/factorio-portal-key`; refuses a dirty tree.
