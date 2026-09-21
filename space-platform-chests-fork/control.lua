@@ -46,7 +46,17 @@ script.on_event(
         end
     end)
 
-script.on_configuration_changed(bays.adopt_bays)
+-- Filters are a snapshot of the item list at placement. Rebuild them on
+-- registered chests so items added since (by this mod or others) get a slot.
+-- Blocked hubless chests are unregistered and keep their bar at 1.
+script.on_configuration_changed(function()
+    bays.adopt_bays()
+    for _, set in ipairs(storage.hub_chests) do
+        if set.chest.valid then
+            init_hub_chest_with_filters(set.chest)
+        end
+    end
+end)
 
 -- A hub appeared (script or editor; the engine allows at most one per
 -- surface). Wake every blocked chest on its surface.
@@ -163,6 +173,7 @@ function item_filter(item)
         or item.place_as_tile_result ~= nil
         or item.type == "repair-tool"
         or item.type == "module"
+        or item.type == "space-platform-starter-pack" -- platformer-fork founds platforms from the hub
     then
         return true
     end

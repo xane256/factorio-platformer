@@ -21,6 +21,8 @@ script.on_init(function()
             if c2 and c2.valid then
                 local n = c2.get_inventory(defines.inventory.chest).insert({ name = "solar-panel", count = 5 })
                 log("SPCTEST: platform chest built OK, seeded " .. n .. " solar panels")
+                local packs = c2.get_inventory(defines.inventory.chest).insert({ name = "space-platform-starter-pack", count = 1 })
+                log("SPCTEST: platform chest accepted " .. packs .. " starter packs (want 1)")
                 storage.platform_chest = c2
             else
                 log("SPCTEST: FAIL platform chest not created")
@@ -30,6 +32,15 @@ script.on_init(function()
     end
 
     storage.stage = 0
+end)
+
+-- A chest placed under an older version must pick up newly whitelisted items.
+script.on_configuration_changed(function()
+    local pc = storage.platform_chest
+    if pc and pc.valid then
+        local n = pc.get_inventory(defines.inventory.chest).insert({ name = "space-platform-starter-pack", count = 1 })
+        log("SPCTEST: after mod update, existing chest accepted " .. n .. " starter packs (want 1)")
+    end
 end)
 
 script.on_nth_tick(120, function()
@@ -43,6 +54,10 @@ script.on_nth_tick(120, function()
         if storage.platform_chest and storage.platform_chest.valid then
             local left = storage.platform_chest.get_inventory(defines.inventory.chest).get_item_count("solar-panel")
             log("SPCTEST: platform chest has " .. left .. " solar panels left (want 0)")
+            local pc = storage.platform_chest
+            local hub = pc.surface.find_entities_filtered({ name = "space-platform-hub", limit = 1 })[1]
+            log("SPCTEST: starter packs in platform chest: " .. pc.get_inventory(defines.inventory.chest).get_item_count("space-platform-starter-pack") ..
+                " (want 0), in hub: " .. (hub and hub.get_item_count("space-platform-starter-pack") or -1) .. " (want 1)")
         end
         local hub = lab.create_entity({ name = "space-platform-hub", position = { 32, 32 }, force = "player", raise_built = true })
         if hub and hub.valid then
@@ -89,7 +104,10 @@ script.on_nth_tick(120, function()
         local base = nil
         for _, pl in pairs(force.platforms) do base = pl break end
         if base and base.hub then
-            base.hub.insert({ name = "space-platform-starter-pack", count = 1 })
+            -- The pack normally arrives via the platform chest in case 2.
+            if base.hub.get_item_count("space-platform-starter-pack") == 0 then
+                base.hub.insert({ name = "space-platform-starter-pack", count = 1 })
+            end
             local sibling = force.create_space_platform({ name = "Base 2", planet = "nauvis", starter_pack = "space-platform-starter-pack" })
             log("SPCTEST: sibling created, state=" .. sibling.state .. " (want " .. defines.space_platform_state.waiting_for_starter_pack .. ": waiting)")
             storage.sibling = sibling

@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.1.2
+Date: 21. 09. 2026
+  Bugfixes:
+    - Hub chests accept space platform starter packs.
+    - Hub chests already placed pick up newly accepted items, including ones added by other mods,
+      when the mod set changes.
+---------------------------------------------------------------------------------------------------
 Version: 1.1.1
 Date: 20. 09. 2026
   Bugfixes:
