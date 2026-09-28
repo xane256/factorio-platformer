@@ -3,6 +3,7 @@ require("__platformer-fork__/lib/lib.lua")
 require("__platformer-fork__/data/recipes/recipes.lua")
 require("__platformer-fork__/data/technologies/technologies.lua")
 require("__platformer-fork__/data/items/items.lua")
+require("__platformer-fork__/data/recipes/asteroid-chunk-filters.lua")
 
 require("__platformer-fork__/data/prototypes/planets/nauvis.lua")
 require("__platformer-fork__/data/prototypes/planets/vulcanus.lua")
